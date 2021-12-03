@@ -17,6 +17,8 @@ const myFunction = (param1, param2, param3) => {
   });
 };
 
+// testando a promise:
+
 myFunction(10, 10, 10)
   .then((resolve) => console.log(resolve))
   .catch((error) => console.log(error));
