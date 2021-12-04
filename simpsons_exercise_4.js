@@ -5,7 +5,11 @@
 // Mapear cada item gerando um array de strings no formato `${id} - ${nome}`
 // Exibir as strings na tela (iterar sobre o array de strings e para cada item chamar um console.log)
 
+// ==========================================================================
+
 const fs = require("fs").promises;
+
+// ==========================================================================
 
 fs.readFile("./simpsons.json", "utf-8")
   .then((fileContent) => {
@@ -24,3 +28,32 @@ fs.readFile("./simpsons.json", "utf-8")
   });
 
 // 2. Crie uma função que receba o id de uma personagem como parâmetro e retorne uma Promise que é resolvida com os dados da personagem que possui o id informado. Caso não haja uma personagem com o id informado, rejeite a Promise com o motivo "id não encontrado".
+
+const getSimpsonById = async (id) => {
+  // atribuindo o retorno da promisse a uma variável
+  const simpsons = await fs
+    .readFile("./simpsons.json", "utf-8") // o retorno dessa leitura vem no formato JSON
+    .then((fileContent) => JSON.parse(fileContent));
+
+  const findCharacter = simpsons.find((item) => item.id === id);
+
+  console.log("Dados do personagem encontrado: ", findCharacter);
+
+  if (!findCharacter) {
+    throw new Error("id não encontrado");
+    /* A palavra-chave `throw` dispara um erro que deve ser tratado por quem chamou nossa função.
+     * Em funções `async`, utilizar `throw` faz com que a Promise seja rejeitada,
+     * tendo como motivo o que passarmos para o `throw`.
+     * Ou seja, a linha abaixo rejeita a Promise da nossa função com o motivo 'id não encontrado'
+     */
+  }
+  return findCharacter;
+  /* Da mesma forma que `throw` aciona o fluxo de erro e rejeita a Promise,
+   * `return` aciona o fluxo de sucesso e resolve a Promise.
+   * Sendo assim, a linha abaixo é equivalente a chamar `resolve(chosenSimpson)`
+   * dentro do executor de uma Promise.
+   */
+};
+
+// exemplo:
+getSimpsonById("10");
