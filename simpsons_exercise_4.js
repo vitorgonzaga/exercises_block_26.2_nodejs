@@ -99,3 +99,33 @@ const updateSimpsons = async () => {
 updateSimpsons();
 
 // Crie uma função que leia o arquivo simpsons.json e crie um novo arquivo, chamado simpsonFamily.json , contendo as personagens com id de 1 a 4.
+
+const getDataSimpsons = async () => {
+  try {
+    const simpsons = await fs
+      .readFile("./simpsons.json", "utf-8")
+      .then((fileContent) => JSON.parse(fileContent));
+    console.log("getDataSimpsons", simpsons);
+    return simpsons;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
+const filterSimpsonsFamily = async () => {
+  try {
+    const data = await getDataSimpsons();
+    const arrFamilyIds = ["1", "2", "3", "4"];
+    const filteredData = data.filter((person) =>
+      arrFamilyIds.includes(person.id)
+    );
+    console.log("filteredData", filteredData);
+    await fs.writeFile("./family-simpsons.json", JSON.stringify(filteredData), {
+      flag: "wx",
+    }); // A flag 'wx' não sobscreve o arquivo caso ele já exista, ao inves disso, lança um erro
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
+filterSimpsonsFamily();
