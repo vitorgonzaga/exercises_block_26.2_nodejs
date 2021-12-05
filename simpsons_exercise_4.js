@@ -75,4 +75,27 @@ const getSimpsonById2 = async (id) => {
 };
 
 // exemplo:
-getSimpsonById2("20");
+getSimpsonById2("10");
+
+// Crie uma função que altere o arquivo simpsons.json retirando os personagens com id 10 e 6.
+
+const updateSimpsons = async () => {
+  try {
+    const simpsons = await fs
+      .readFile("./simpsons.json", "utf-8")
+      .then((fileContent) => JSON.parse(fileContent));
+    // O JSON.parse transforma para objeto, contudo importante lembrar que os objetos estão envoltos por [], ou seja, já são um array.
+    const idsToExclude = ["10", "6"];
+    const arrSimpsons = simpsons.filter(
+      (item) => !idsToExclude.includes(item.id)
+    );
+    console.log("arrSimpsons", arrSimpsons);
+    return arrSimpsons;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
+updateSimpsons();
+
+// Crie uma função que leia o arquivo simpsons.json e crie um novo arquivo, chamado simpsonFamily.json , contendo as personagens com id de 1 a 4.
