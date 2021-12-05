@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "simpsons": "node simpsons_exercise_4.js"
+    "simpsons": "node simpsons_exercise_4.js",
+    "5": "node exercicio-5.js"
   },
   "repository": {
     "type": "git",
