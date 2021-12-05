@@ -8,7 +8,8 @@
     "simpsons": "node simpsons_exercise_4.js",
     "5": "node exercicio-5.js",
     "6": "node exercicio-6.js",
-    "7": "node exercicio-7.js"
+    "7": "node exercicio-7.js",
+    "8": "node exercicio-8.js"
   },
   "repository": {
     "type": "git",
