@@ -120,12 +120,71 @@ const filterSimpsonsFamily = async () => {
       arrFamilyIds.includes(person.id)
     );
     console.log("filteredData", filteredData);
-    await fs.writeFile("./family-simpsons.json", JSON.stringify(filteredData), {
-      flag: "wx",
-    }); // A flag 'wx' não sobscreve o arquivo caso ele já exista, ao inves disso, lança um erro
+    // ==========================================================================================
+    // await fs.writeFile("./family-simpsons.json", JSON.stringify(filteredData), {
+    //   flag: "wx",
+    // }); // A flag 'wx' não sobscreve o arquivo caso ele já exista, ao inves disso, lança um erro
+    // ==========================================================================================
+    await fs.writeFile("./family-simpsons.json", JSON.stringify(filteredData));
   } catch (err) {
     throw new Error(err.message);
   }
 };
 
 filterSimpsonsFamily();
+
+// Crie uma função que adicione ao arquivo simpsonFamily.json o personagem Nelson Muntz .
+
+const getDataSimpsonsFamily = async () => {
+  try {
+    const simpsons = await fs
+      .readFile("./family-simpsons.json", "utf-8")
+      .then((fileContent) => JSON.parse(fileContent));
+    return simpsons;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
+const addNelsonMuntz = async () => {
+  try {
+    // obter os dados de simpsons-family;
+    const familyData = await getDataSimpsonsFamily();
+    // filtrar os dados ref. a Nelson Muntz;
+    const allData = await getDataSimpsons();
+    const nelsonData = allData.filter((item) => item.name === "Nelson Muntz");
+    // appendar o objeto no arquivo family-simpsons.json (pushing in array);
+    familyData.push(...nelsonData);
+    // sobrescrever o arquivo simpsons-family.json com os dados atualizados salvos em alguma variável;
+    await fs.writeFile("./family-simpsons.json", JSON.stringify(familyData));
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
+// addNelsonMuntz(); Essa execução concorre com a função changeNelsonMuntz... Na vida real deve-se criar uma função async para que uma função aguarde o tempo de execução da outra
+
+// Crie uma função que substitua o personagem Nelson Muntz pela personagem Maggie Simpson no arquivo simpsonFamily.json .
+
+const changeNelsonMuntz = async () => {
+  try {
+    // atribuir uma variavel com os dados da Maggie Simpson
+    const maggieSimpson = [{ id: "5", name: "Maggie Simpson" }];
+    // obter dados da familia
+    const simpsonsFamily = await getDataSimpsonsFamily();
+    // criar novo array sem o Nelson;
+    const withoutNelson = simpsonsFamily.filter(
+      (simpson) => simpson.id !== "8"
+    );
+    console.log("withoutNelson", withoutNelson);
+    // appendar a Maggie
+    const withMaggie = withoutNelson.concat(maggieSimpson);
+    // sobrescrever o arquivo family-simpsons.json
+    console.log(withMaggie);
+    await fs.writeFile("./family-simpsons.json", JSON.stringify(withMaggie));
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
+changeNelsonMuntz();
