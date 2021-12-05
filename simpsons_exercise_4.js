@@ -55,5 +55,24 @@ const getSimpsonById = async (id) => {
    */
 };
 
+//utilizando try/catch para tratar um possível erro de leitura do arquivo json
+const getSimpsonById2 = async (id) => {
+  try {
+    // atribuindo o retorno da promisse a uma variável
+    const simpsons = await fs
+      .readFile("./simpsons.json", "utf-8") // o retorno dessa leitura vem no formato JSON
+      .then((fileContent) => JSON.parse(fileContent));
+    const findCharacter = simpsons.find((item) => item.id === id);
+    console.log("Dados do personagem encontrado: ", findCharacter);
+    if (!findCharacter) {
+      throw new Error("id não encontrado");
+    }
+    return findCharacter;
+  } catch (err) {
+    // Esse cacth é para tratamento de erro com a promisse apenas. Qualquer outro tratamento deve ser tratado a parte.
+    throw new Error(err.message);
+  }
+};
+
 // exemplo:
-getSimpsonById("10");
+getSimpsonById2("20");

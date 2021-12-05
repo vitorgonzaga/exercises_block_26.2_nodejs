@@ -83,7 +83,7 @@ const callMyFunction2 = async () => {
     // Considerando que o retorno do "resolve" da promisse em questão é um string, basta utilizar um console.log para a variável "result"
     console.log(result);
   } catch (batatinha) {
-    console.error(batatinha);
+    console.error(batatinha); // usei "batatinha" só para testar se funcionava e funcionou perfeitamente.
   }
 };
 
